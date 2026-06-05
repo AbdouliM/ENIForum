@@ -1,0 +1,32 @@
+package com.enicarthage.forum.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import java.time.LocalDateTime;
+
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
+public class CandidatureCVDto {
+    private Long id;
+    private String fichierCV;
+    private String posteVise;
+    private Double scoreIA;
+    private String justificationIA;
+    private String analyseDetaillee;
+    private String etatAnalyseDetaillee;
+    private String competencesExtraites;
+    private String statut;
+    private String commentaire;
+    private String dossierComplet;
+    private String candidatNom;
+    private String candidatEmail;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String motDePasseProvisoire;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateDepot;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateAnalyseIA;
+}
