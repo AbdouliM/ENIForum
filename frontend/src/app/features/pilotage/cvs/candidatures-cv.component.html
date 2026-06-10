@@ -1,0 +1,79 @@
+<app-layout title="Candidatures" subtitle="Dossiers déposés via les formulaires publics">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+
+  <div class="toolbar">
+    <div class="segmented">
+      <button class="seg-btn" *ngFor="let f of filtres" [class.active]="filtre === f.cle" (click)="filtre = f.cle">
+        {{ f.libelle }} <span class="count">{{ nombre(f.cle) }}</span>
+      </button>
+    </div>
+    <span class="spacer"></span>
+    <div class="search input-icon">
+      <lucide-icon name="search" [size]="16"></lucide-icon>
+      <input class="input" type="search" placeholder="Nom, email ou comité" [(ngModel)]="recherche" aria-label="Rechercher">
+    </div>
+    <a class="btn btn-ai" routerLink="/pilotage/ia"><lucide-icon name="sparkles" [size]="16"></lucide-icon> Classement IA</a>
+  </div>
+
+  <div class="card">
+    <div class="skeleton" style="height:240px;margin:16px" *ngIf="loading"></div>
+    <div class="table-wrap" *ngIf="!loading && visibles.length">
+      <table class="table">
+        <thead><tr><th>Candidat</th><th>Poste</th><th>Comité</th><th>Déposée le</th><th>Score IA</th><th>Statut</th><th class="actions"></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let l of visibles" class="click" (click)="ouverte = l">
+            <td><div class="cell-user"><span class="avatar">{{ initiale(l.c.candidatNom) }}</span>
+              <span class="truncate"><span class="name">{{ l.c.candidatNom }}</span><br><span class="sub">{{ l.c.candidatEmail }}</span></span></div></td>
+            <td><span class="badge" [ngClass]="l.c.posteVise === 'CHEF_COMITE' ? 'badge-amber' : ''">{{ l.poste }}</span></td>
+            <td>{{ l.comite }}</td>
+            <td class="nowrap">{{ l.c.dateDepot | date:'d MMM y' }}</td>
+            <td><span class="score" *ngIf="l.score !== null" [ngClass]="l.score >= 70 ? 'hi' : l.score >= 50 ? 'mid' : 'lo'">{{ l.score | number:'1.0-0' }}</span>
+                <span class="muted small" *ngIf="l.score === null">Non analysé</span></td>
+            <td><app-statut-badge [statut]="l.c.statut"></app-statut-badge></td>
+            <td class="actions"><lucide-icon name="chevron-right" [size]="18" class="muted"></lucide-icon></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <app-empty *ngIf="!loading && !visibles.length" icon="inbox" title="Aucune candidature" text="Aucun dossier ne correspond à ce filtre."></app-empty>
+  </div>
+
+  <!-- Fiche candidature -->
+  <app-modal [open]="!!ouverte" size="lg" [title]="ouverte?.c?.candidatNom || ''"
+             [subtitle]="(ouverte?.poste || '') + ' · Comité ' + (ouverte?.comite || '') + ' · déposée le ' + (ouverte?.c?.dateDepot | date:'d MMMM y')"
+             (close)="ouverte = null">
+    <ng-container *ngIf="ouverte as o">
+      <div class="fiche">
+        <div>
+          <div class="section-title">Dossier</div>
+          <dl class="kv">
+            <dt>Email</dt><dd>{{ o.c.candidatEmail }}</dd>
+            <ng-container *ngFor="let k of champs"><ng-container *ngIf="o.dossier[k]">
+              <dt>{{ k === 'Tel' ? 'Téléphone' : k === 'Niveau' ? 'Année' : k }}</dt><dd>{{ k === 'Niveau' ? o.dossier[k] + 'e année' : o.dossier[k] }}</dd>
+            </ng-container></ng-container>
+            <dt>Statut</dt><dd><app-statut-badge [statut]="o.c.statut"></app-statut-badge></dd>
+            <ng-container *ngIf="o.c.commentaire"><dt>Motif du refus</dt><dd>{{ o.c.commentaire }}</dd></ng-container>
+          </dl>
+          <button class="btn btn-secondary btn-sm mt" (click)="telecharger(o)"><lucide-icon name="download" [size]="15"></lucide-icon> Télécharger le CV</button>
+        </div>
+        <div>
+          <div class="row"><div class="section-title">Analyse IA</div><span class="spacer"></span>
+            <button class="btn btn-ghost btn-sm" (click)="relancerAnalyse(o)" [disabled]="analyse">
+              <lucide-icon name="refresh-cw" [size]="14"></lucide-icon> {{ analyse ? 'Analyse…' : 'Relancer' }}
+            </button>
+          </div>
+          <app-analyse-ia [candidature]="o.c" [compact]="true"></app-analyse-ia>
+        </div>
+      </div>
+    </ng-container>
+    <div modal-footer>
+      <ng-container *ngIf="ouverte?.c?.statut === 'EN_ATTENTE'">
+        <button class="btn btn-danger" (click)="decision = { c: ouverte!.c, mode: 'refuser' }">Refuser</button>
+        <button class="btn btn-success" (click)="decision = { c: ouverte!.c, mode: 'accepter' }"><lucide-icon name="check" [size]="16"></lucide-icon> Accepter</button>
+      </ng-container>
+      <button class="btn btn-secondary" *ngIf="ouverte?.c?.statut !== 'EN_ATTENTE'" (click)="ouverte = null">Fermer</button>
+    </div>
+  </app-modal>
+
+  <app-decision [candidature]="decision?.c ?? null" [mode]="decision?.mode ?? null" (termine)="finDecision($event)"></app-decision>
+</app-layout>

@@ -1,0 +1,11 @@
+.hello { display: flex; align-items: center; gap: 18px; padding: 20px 22px; flex-wrap: wrap; background: linear-gradient(120deg, #fff 55%, var(--brand-50)); }
+.ico { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; background: var(--gradient); color: #fff; }
+.grow { flex: 1; min-width: 200px; }
+.hello h2 { font-size: 20px; }
+.pct { width: 260px; display: flex; flex-direction: column; gap: 6px; }
+.pct b { font-size: 20px; color: var(--brand-900); }
+.cols { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; align-items: start; }
+.shortcut { display: flex; align-items: center; gap: 12px; padding: 16px; color: var(--text); text-decoration: none !important; }
+.s-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--brand-100); color: var(--brand); }
+.s-ico.amber { background: var(--warning-bg); color: var(--warning); } .s-ico.green { background: var(--green-100); color: var(--green); }
+@media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } .pct { width: 100%; } }

@@ -1,0 +1,14 @@
+.edition { display: flex; align-items: center; gap: 24px; padding: 22px 24px; flex-wrap: wrap;
+  background: linear-gradient(120deg, #fff 55%, var(--brand-50)); }
+.ed-main { flex: 1; min-width: 260px; }
+.ed-main h2 { font-size: 21px; margin: 8px 0 6px; }
+.ed-meta { display: flex; gap: 18px; flex-wrap: wrap; color: var(--text-2); font-size: 13px; font-weight: 600; }
+.ed-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.countdown { display: flex; flex-direction: column; align-items: center; padding: 10px 20px; border-radius: 14px; background: var(--gradient); color: #fff; }
+.cd-val { font-size: 24px; font-weight: 800; line-height: 1.1; }
+.cd-lbl { font-size: 11.5px; opacity: .9; }
+.charts { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
+.chart { height: 300px; }
+.c-ico { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--brand-100); color: var(--brand); }
+.grow-bar { flex: 1; }
+@media (max-width: 1000px) { .charts { grid-template-columns: 1fr; } }

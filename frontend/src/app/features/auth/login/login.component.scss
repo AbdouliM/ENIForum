@@ -1,0 +1,36 @@
+.auth { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); }
+.brand-panel { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 48px;
+  background: var(--gradient); color: #fff; overflow: hidden; }
+.brand-panel::after { content: ''; position: absolute; width: 520px; height: 520px; right: -180px; bottom: -200px; border-radius: 50%; background: rgba(255,255,255,.08); }
+.logos { display: flex; gap: 12px; }
+.logo-tile { background: #fff; border-radius: 14px; padding: 8px 12px; box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+.logo-tile img { height: 50px; width: auto; }
+.pitch { max-width: 460px; position: relative; z-index: 1; }
+.pitch h1 { color: #fff; font-size: 36px; letter-spacing: -.02em; }
+.pitch p { margin-top: 12px; font-size: 16px; color: rgba(255,255,255,.88); }
+.pitch ul { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 10px; font-weight: 600; }
+.pitch li { display: flex; align-items: center; gap: 10px; }
+.foot { font-size: 12.5px; color: rgba(255,255,255,.75); position: relative; z-index: 1; }
+.form-side { display: flex; flex-direction: column; padding: 28px 40px; }
+.back { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; color: var(--text-2); align-self: flex-start; }
+.box { width: 100%; max-width: 400px; margin: auto; padding: 24px 0; }
+.box h2 { font-size: 26px; }
+.box > p { margin: 6px 0 22px; }
+.pw .input { padding-right: 44px; }
+.eye { position: absolute; right: 4px; top: 4px; }
+.divider { display: flex; align-items: center; gap: 12px; margin: 26px 0 14px; color: var(--text-3); font-size: 12.5px; font-weight: 600; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.links { display: flex; flex-direction: column; gap: 10px; }
+.link-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; color: var(--text); text-decoration: none !important; transition: border-color .15s, background .15s; }
+.link-card:hover { border-color: #B9D6F0; background: var(--brand-50); }
+.link-card > span:nth-child(2) { flex: 1; display: flex; flex-direction: column; }
+.link-card small { color: var(--text-3); font-size: 12px; }
+.lc-ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--brand-100); color: var(--brand); }
+.lc-ico.gold { background: var(--warning-bg); color: var(--warning); }
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .brand-panel { padding: 24px; gap: 20px; }
+  .pitch h1 { font-size: 26px; }
+  .pitch ul, .foot { display: none; }
+  .form-side { padding: 20px; }
+}

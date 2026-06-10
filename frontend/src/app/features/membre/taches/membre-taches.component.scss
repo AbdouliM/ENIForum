@@ -1,0 +1,15 @@
+.board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.col { background: #EAF0F6; border-radius: var(--radius-lg); padding: 12px; }
+.col-head { display: flex; align-items: center; gap: 8px; padding: 2px 4px 10px; font-weight: 800; color: var(--brand-900); }
+.col-head .count { margin-left: auto; font-size: 12px; padding: 1px 8px; border-radius: 99px; background: #fff; color: var(--text-2); }
+.cards { display: flex; flex-direction: column; gap: 10px; }
+.tache { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.tache.retard { border-color: #F3B8B8; box-shadow: inset 3px 0 0 var(--danger); }
+.tache.done h3 { color: var(--text-3); text-decoration: line-through; }
+.top { min-height: 24px; }
+.tache h3 { font-size: 14.5px; }
+.due { color: var(--text-2); font-size: 13px; }
+.due .red { color: var(--danger); } .due .amber { color: var(--warning); }
+.actions { display: flex; align-items: center; gap: 6px; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 2px; }
+.vide { text-align: center; color: var(--text-3); font-size: 13px; padding: 18px; border: 1.5px dashed #D3DDE8; border-radius: 12px; }
+@media (max-width: 900px) { .board { grid-template-columns: 1fr; } }

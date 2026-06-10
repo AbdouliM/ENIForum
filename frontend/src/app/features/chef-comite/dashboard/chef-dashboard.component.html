@@ -1,0 +1,64 @@
+<app-layout title="Tableau de bord" [subtitle]="comite ? 'Comité ' + comite.nom : 'Chef de comité'">
+  <div class="skeleton" style="height:130px" *ngIf="loading"></div>
+
+  <div class="card" *ngIf="!loading && sansComite">
+    <app-empty icon="layers" title="Aucun comité assigné" text="L’administration ne vous a pas encore confié de comité. Vous serez notifié dès que ce sera fait."></app-empty>
+  </div>
+
+  <ng-container *ngIf="!loading && comite">
+    <section class="card hello">
+      <span class="ico"><lucide-icon [name]="icone(comite.nom)" [size]="26"></lucide-icon></span>
+      <div class="grow">
+        <h2>Bonjour {{ prenom }}</h2>
+        <p class="muted">Vous dirigez le comité <b>{{ comite.nom }}</b> · {{ comite.membres?.length || 0 }} membre(s)</p>
+      </div>
+      <div class="pct">
+        <div class="row"><b>{{ avancement }} %</b><span class="muted small">des tâches terminées</span></div>
+        <div class="progress"><div [style.width.%]="avancement" class="high"></div></div>
+      </div>
+    </section>
+
+    <div class="grid grid-4 mt">
+      <app-stat-card icon="list-todo" label="À faire" [value]="nb('A_FAIRE')"></app-stat-card>
+      <app-stat-card icon="refresh-cw" label="En cours" [value]="nb('EN_COURS')"></app-stat-card>
+      <app-stat-card icon="circle-check" tone="green" label="Terminées" [value]="nb('TERMINEE')"></app-stat-card>
+      <app-stat-card icon="clock" tone="red" label="En retard" [value]="nb('EN_RETARD')"></app-stat-card>
+    </div>
+
+    <div class="cols mt">
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Tâches à suivre</div><div class="card-sub">Par échéance</div></div>
+          <span class="spacer"></span>
+          <a class="btn btn-ghost btn-sm" routerLink="/chef-comite/taches">Toutes les tâches <lucide-icon name="arrow-right" [size]="15"></lucide-icon></a>
+        </div>
+        <div class="list" *ngIf="aSuivre.length">
+          <div class="list-item" *ngFor="let t of aSuivre">
+            <span class="dot" [ngClass]="t.statut === 'EN_RETARD' ? 'red' : t.statut === 'EN_COURS' ? '' : 'amber'"></span>
+            <div class="grow"><div class="strong truncate">{{ t.titre }}</div><div class="muted small">{{ t.membreNom || 'Non assignée' }} · échéance {{ t.dateFin | date:'d MMM' }}</div></div>
+            <app-statut-badge [statut]="t.statut"></app-statut-badge>
+          </div>
+        </div>
+        <app-empty *ngIf="!aSuivre.length" icon="circle-check" title="Rien en attente" text="Toutes les tâches sont terminées."></app-empty>
+      </div>
+
+      <div class="stack">
+        <a class="card card-link shortcut" routerLink="/chef-comite/membres">
+          <span class="s-ico amber"><lucide-icon name="user-plus" [size]="20"></lucide-icon></span>
+          <div class="grow"><div class="strong">Demandes d’adhésion</div><div class="muted small">{{ demandes }} candidature(s) à étudier</div></div>
+          <span class="badge badge-amber" *ngIf="demandes">{{ demandes }}</span>
+        </a>
+        <a class="card card-link shortcut" routerLink="/chef-comite/workshops">
+          <span class="s-ico"><lucide-icon name="presentation" [size]="20"></lucide-icon></span>
+          <div class="grow"><div class="strong">Workshops</div><div class="muted small">{{ workshops.length ? 'Prochain : ' + workshops[0].titre : 'Proposez un workshop' }}</div></div>
+          <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
+        </a>
+        <a class="card card-link shortcut" routerLink="/chef-comite/comite">
+          <span class="s-ico green"><lucide-icon name="users" [size]="20"></lucide-icon></span>
+          <div class="grow"><div class="strong">Mon équipe</div><div class="muted small">{{ comite.membres?.length || 0 }} membre(s)</div></div>
+          <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+</app-layout>

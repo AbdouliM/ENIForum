@@ -1,0 +1,10 @@
+.comite { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.top { display: flex; align-items: center; gap: 10px; }
+.top .grow { flex: 1; min-width: 0; }
+.top h3 { font-size: 16px; }
+.ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--brand-100); color: var(--brand); flex-shrink: 0; }
+.desc { color: var(--text-2); font-size: 13px; min-height: 38px; }
+.chef { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: var(--surface-2); font-size: 13px; min-height: 52px; }
+.stats { display: flex; gap: 16px; color: var(--text-2); font-size: 12.5px; font-weight: 600; }
+.stats span { display: inline-flex; align-items: center; gap: 6px; }
+.grow-bar { flex: 1; }

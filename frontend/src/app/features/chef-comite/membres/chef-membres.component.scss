@@ -1,0 +1,6 @@
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.demande { width: 100%; border: 0; background: none; text-align: left; cursor: pointer; }
+.demande:hover { background: var(--surface-2); }
+.fiche { display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; }
+.fiche .kv { grid-template-columns: 100px 1fr; }
+@media (max-width: 900px) { .cols, .fiche { grid-template-columns: 1fr; } }

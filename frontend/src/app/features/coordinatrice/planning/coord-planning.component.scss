@@ -1,0 +1,6 @@
+.timeline { display: flex; flex-direction: column; gap: 20px; }
+.j-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.j-date { font-weight: 800; color: var(--brand-900); text-transform: capitalize; font-size: 15px; }
+.heure { width: 52px; font-weight: 800; color: var(--brand); font-size: 14px; }
+.trait { width: 3px; align-self: stretch; border-radius: 3px; background: var(--brand-100); }
+label input { accent-color: var(--brand); }

@@ -1,0 +1,72 @@
+<div class="auth">
+  <aside class="brand-panel">
+    <a routerLink="/" class="logos">
+      <span class="logo-tile"><img src="assets/logo-enicarthage.png" alt="ENICarthage"></span>
+      <span class="logo-tile"><img src="assets/logo-forum.png" alt="Forum Entreprises ENICarthage"></span>
+    </a>
+    <div class="pitch">
+      <h1>Bienvenue sur EniForum</h1>
+      <p>L’espace des organisateurs du Forum Entreprises de l’ENICarthage : comités, tâches, workshops et candidatures.</p>
+      <ul>
+        <li><lucide-icon name="circle-check" [size]="18"></lucide-icon> Un espace dédié à chaque rôle</li>
+        <li><lucide-icon name="circle-check" [size]="18"></lucide-icon> Suivi des tâches et alertes de retard</li>
+        <li><lucide-icon name="circle-check" [size]="18"></lucide-icon> Candidatures analysées par IA</li>
+      </ul>
+    </div>
+    <span class="foot">École Nationale d’Ingénieurs de Carthage</span>
+  </aside>
+
+  <main class="form-side">
+    <a routerLink="/" class="back"><lucide-icon name="arrow-left" [size]="16"></lucide-icon> Retour à l’accueil</a>
+    <div class="box">
+      <h2>Connexion</h2>
+      <p class="muted">Utilisez l’email et le mot de passe de votre compte.</p>
+
+      <div class="alert alert-error" *ngIf="error" role="alert">
+        <lucide-icon name="circle-alert" [size]="18"></lucide-icon><span>{{ error }}</span>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="stack">
+        <div class="field">
+          <label for="email">Adresse email</label>
+          <div class="input-icon">
+            <lucide-icon name="mail" [size]="17"></lucide-icon>
+            <input id="email" class="input" type="email" formControlName="email" placeholder="prenom.nom@exemple.tn" autocomplete="email">
+          </div>
+          <span class="field-error" *ngIf="f['email'].touched && f['email'].invalid">Saisissez une adresse email valide</span>
+        </div>
+
+        <div class="field">
+          <label for="mdp">Mot de passe</label>
+          <div class="input-icon pw">
+            <lucide-icon name="lock" [size]="17"></lucide-icon>
+            <input id="mdp" class="input" [type]="showPassword ? 'text' : 'password'" formControlName="motDePasse" autocomplete="current-password">
+            <button type="button" class="icon-btn eye" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'">
+              <lucide-icon [name]="showPassword ? 'eye-off' : 'eye'" [size]="17"></lucide-icon>
+            </button>
+          </div>
+          <span class="field-error" *ngIf="f['motDePasse'].touched && f['motDePasse'].invalid">Mot de passe requis</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="loading">
+          <span class="spinner" *ngIf="loading"></span>
+          <span *ngIf="!loading">Se connecter</span>
+        </button>
+      </form>
+
+      <div class="divider"><span>Pas encore de compte ?</span></div>
+      <div class="links">
+        <a class="link-card" routerLink="/auth/inscription-membre">
+          <span class="lc-ico"><lucide-icon name="user-plus" [size]="18"></lucide-icon></span>
+          <span><b>Devenir membre</b><small>Rejoindre un comité</small></span>
+          <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
+        </a>
+        <a class="link-card" routerLink="/auth/candidature-chef">
+          <span class="lc-ico gold"><lucide-icon name="crown" [size]="18"></lucide-icon></span>
+          <span><b>Chef de comité</b><small>Déposer une candidature</small></span>
+          <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>

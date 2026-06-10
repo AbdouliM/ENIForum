@@ -1,0 +1,64 @@
+<app-layout title="Tableau de bord" subtitle="Supervision de l’organisation et des recrutements">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+  <div class="grid grid-4" *ngIf="loading"><div class="skeleton" style="height:96px" *ngFor="let i of [1,2,3,4]"></div></div>
+
+  <ng-container *ngIf="!loading && kpis">
+    <div class="grid grid-4">
+      <app-stat-card icon="trending-up" label="Avancement global" [value]="kpis.avancementGlobal + ' %'" sub="Tâches terminées"></app-stat-card>
+      <app-stat-card icon="clock" tone="red" label="Tâches en retard" [value]="kpis.tachesEnRetard" sub="À relancer"></app-stat-card>
+      <app-stat-card icon="file-text" tone="amber" label="Candidatures à traiter" [value]="enAttente" [sub]="kpis.totalCandidatures + ' au total'"></app-stat-card>
+      <app-stat-card icon="presentation" tone="green" label="Workshops validés" [value]="kpis.workshopsValides + ' / ' + kpis.totalWorkshops"></app-stat-card>
+    </div>
+
+    <div class="cols mt">
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Avancement des comités</div><div class="card-sub">Tâches terminées et restantes</div></div>
+          <span class="spacer"></span>
+          <a class="btn btn-ghost btn-sm" routerLink="/pilotage/avancement">Détail <lucide-icon name="arrow-right" [size]="15"></lucide-icon></a>
+        </div>
+        <div class="card-body chart"><canvas #cComites></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Tâches en retard</div><div class="card-sub">Échéance dépassée</div></div>
+          <span class="spacer"></span>
+          <span class="badge badge-red" *ngIf="kpis.tachesEnRetard">{{ kpis.tachesEnRetard }}</span>
+        </div>
+        <div class="list" *ngIf="retards.length">
+          <div class="list-item" *ngFor="let t of retards">
+            <span class="dot red"></span>
+            <div class="grow">
+              <div class="strong truncate">{{ t.titre }}</div>
+              <div class="muted small">{{ t.comiteNom }} · {{ t.membreNom || 'Non assignée' }} · échue le {{ t.dateFin | date:'d MMM' }}</div>
+            </div>
+          </div>
+        </div>
+        <app-empty *ngIf="!retards.length" icon="circle-check" title="Aucun retard" text="Toutes les tâches sont dans les temps."></app-empty>
+      </div>
+    </div>
+
+    <div class="card mt">
+      <div class="card-head">
+        <div><div class="card-title">Candidatures à traiter</div><div class="card-sub">Classées par score IA</div></div>
+        <span class="spacer"></span>
+        <a class="btn btn-ai btn-sm" routerLink="/pilotage/ia"><lucide-icon name="sparkles" [size]="15"></lucide-icon> Ouvrir le module IA</a>
+      </div>
+      <div class="list" *ngIf="aTraiter.length">
+        <div class="list-item" *ngFor="let x of aTraiter">
+          <span class="avatar">{{ initiale(x.c.candidatNom) }}</span>
+          <div class="grow">
+            <div class="strong">{{ x.c.candidatNom }}</div>
+            <div class="muted small">{{ poste(x.c.posteVise) }}<ng-container *ngIf="x.comite"> · Comité {{ x.comite }}</ng-container></div>
+          </div>
+          <span class="badge" [ngClass]="x.a.recommandation === 'PRIORISER' ? 'badge-green' : x.a.recommandation === 'ENTRETIEN' ? 'badge-amber' : x.a.recommandation ? 'badge-red' : ''">
+            {{ x.a.recommandation ? reco[x.a.recommandation] : 'Non analysée' }}
+          </span>
+          <app-score-ring [score]="x.a.score" [size]="44"></app-score-ring>
+        </div>
+      </div>
+      <app-empty *ngIf="!aTraiter.length" icon="inbox" title="Aucune candidature en attente" text="Les nouvelles candidatures apparaîtront ici."></app-empty>
+    </div>
+  </ng-container>
+</app-layout>

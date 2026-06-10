@@ -1,0 +1,57 @@
+<app-layout title="Tableau de bord" subtitle="Vos tâches et nouveautés">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+  <div class="skeleton" style="height:130px" *ngIf="loading"></div>
+
+  <ng-container *ngIf="!loading && !erreur">
+    <section class="card hello">
+      <div class="grow">
+        <h2>Bonjour {{ prenom }}</h2>
+        <p class="muted" *ngIf="taches.length">{{ nb('A_FAIRE') + nb('EN_COURS') + nb('EN_RETARD') }} tâche(s) à traiter · {{ nb('TERMINEE') }} terminée(s)</p>
+        <p class="muted" *ngIf="!taches.length">Aucune tâche ne vous est encore assignée.</p>
+      </div>
+      <div class="ring-wrap" *ngIf="taches.length">
+        <app-score-ring [score]="avancement" [size]="72"></app-score-ring>
+        <span class="muted small">avancement</span>
+      </div>
+    </section>
+
+    <div class="grid grid-3 mt">
+      <app-stat-card icon="refresh-cw" label="En cours" [value]="nb('EN_COURS')"></app-stat-card>
+      <app-stat-card icon="clock" tone="red" label="En retard" [value]="nb('EN_RETARD')"></app-stat-card>
+      <app-stat-card icon="circle-check" tone="green" label="Terminées" [value]="nb('TERMINEE')"></app-stat-card>
+    </div>
+
+    <div class="cols mt">
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Mes priorités</div><div class="card-sub">Retards et urgences d’abord</div></div>
+          <span class="spacer"></span>
+          <a class="btn btn-ghost btn-sm" routerLink="/membre/taches">Mes tâches <lucide-icon name="arrow-right" [size]="15"></lucide-icon></a>
+        </div>
+        <div class="list" *ngIf="priorites.length">
+          <a class="list-item lien" *ngFor="let t of priorites" routerLink="/membre/taches">
+            <span class="dot" [ngClass]="t.statut === 'EN_RETARD' ? 'red' : t.priorite === 'URGENTE' ? 'amber' : ''"></span>
+            <div class="grow"><div class="strong truncate">{{ t.titre }}</div><div class="muted small">{{ t.comiteNom }} · échéance {{ t.dateFin | date:'d MMM' }}</div></div>
+            <app-statut-badge [statut]="t.statut"></app-statut-badge>
+          </a>
+        </div>
+        <app-empty *ngIf="!priorites.length" icon="circle-check" title="Tout est à jour" text="Aucune tâche en attente."></app-empty>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><div class="card-title">Notifications</div><div class="card-sub">Non lues</div></div>
+          <span class="spacer"></span>
+          <a class="btn btn-ghost btn-sm" routerLink="/membre/notifications">Tout voir</a>
+        </div>
+        <div class="list" *ngIf="notifications.length">
+          <div class="list-item" *ngFor="let n of notifications">
+            <span class="n-ico"><lucide-icon name="bell" [size]="15"></lucide-icon></span>
+            <div class="grow"><div class="small">{{ n.message }}</div><div class="muted small">{{ n.dateEnvoi | date:'d MMM à HH:mm' }}</div></div>
+          </div>
+        </div>
+        <app-empty *ngIf="!notifications.length" icon="bell" title="Aucune nouveauté"></app-empty>
+      </div>
+    </div>
+  </ng-container>
+</app-layout>

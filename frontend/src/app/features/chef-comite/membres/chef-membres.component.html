@@ -1,0 +1,63 @@
+<app-layout title="Membres" [subtitle]="comiteNom ? 'Équipe du comité ' + comiteNom : ''">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+  <div class="skeleton" style="height:200px" *ngIf="loading"></div>
+
+  <div class="cols" *ngIf="!loading && !erreur">
+    <div class="card">
+      <div class="card-head"><div><div class="card-title">Équipe</div><div class="card-sub">{{ membres.length }} membre(s)</div></div></div>
+      <div class="list" *ngIf="membres.length">
+        <div class="list-item" *ngFor="let m of membres">
+          <span class="avatar">{{ initiales(m.nom) }}</span>
+          <div class="grow"><div class="strong">{{ m.nom }}</div><div class="muted small">{{ m.email }}</div></div>
+          <button class="icon-btn danger" title="Retirer du comité" (click)="aRetirer = m"><lucide-icon name="trash-2" [size]="16"></lucide-icon></button>
+        </div>
+      </div>
+      <app-empty *ngIf="!membres.length" icon="users" title="Équipe vide" text="Acceptez des demandes d’adhésion pour ajouter des membres."></app-empty>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Demandes d’adhésion</div><div class="card-sub">Candidatures « membre » pour votre comité</div></div>
+        <span class="spacer"></span><span class="badge badge-amber" *ngIf="demandes.length">{{ demandes.length }}</span>
+      </div>
+      <div class="list" *ngIf="demandes.length">
+        <button class="list-item demande" *ngFor="let d of demandes" (click)="ouverte = d">
+          <span class="avatar">{{ initiales(d.candidatNom) }}</span>
+          <div class="grow"><div class="strong">{{ d.candidatNom }}</div><div class="muted small">Déposée le {{ d.dateDepot | date:'d MMM y' }}</div></div>
+          <app-score-ring [score]="score(d)" [size]="40"></app-score-ring>
+          <lucide-icon name="chevron-right" [size]="18" class="muted"></lucide-icon>
+        </button>
+      </div>
+      <app-empty *ngIf="!demandes.length" icon="inbox" title="Aucune demande" text="Les nouvelles candidatures pour votre comité apparaîtront ici."></app-empty>
+    </div>
+  </div>
+
+  <app-modal [open]="!!ouverte" size="lg" [title]="ouverte?.candidatNom ?? ''" subtitle="Demande d’adhésion" (close)="ouverte = null">
+    <div class="fiche" *ngIf="ouverte as d">
+      <div>
+        <div class="section-title">Dossier</div>
+        <dl class="kv">
+          <dt>Email</dt><dd>{{ d.candidatEmail }}</dd>
+          <dt>Téléphone</dt><dd>{{ dossier(d)['Tel'] || '—' }}</dd>
+          <dt>Année</dt><dd>{{ dossier(d)['Niveau'] ? dossier(d)['Niveau'] + 'e année' : '—' }}</dd>
+          <dt>Motivation</dt><dd>{{ dossier(d)['Motivation'] || '—' }}</dd>
+          <ng-container *ngIf="dossier(d)['Compétences']"><dt>Compétences</dt><dd>{{ dossier(d)['Compétences'] }}</dd></ng-container>
+        </dl>
+        <button class="btn btn-secondary btn-sm mt" (click)="telecharger(d)"><lucide-icon name="download" [size]="15"></lucide-icon> Télécharger le CV</button>
+      </div>
+      <div>
+        <div class="section-title">Analyse IA</div>
+        <app-analyse-ia [candidature]="d" [compact]="true"></app-analyse-ia>
+      </div>
+    </div>
+    <div modal-footer>
+      <button class="btn btn-danger" (click)="decision = { c: ouverte!, mode: 'refuser' }">Refuser</button>
+      <button class="btn btn-success" (click)="decision = { c: ouverte!, mode: 'accepter' }"><lucide-icon name="check" [size]="16"></lucide-icon> Accepter dans le comité</button>
+    </div>
+  </app-modal>
+
+  <app-decision [candidature]="decision?.c ?? null" [mode]="decision?.mode ?? null" (termine)="finDecision($event)"></app-decision>
+
+  <app-confirm-modal [open]="!!aRetirer" title="Retirer ce membre ?" icon="trash-2" [danger]="true" confirmLabel="Retirer"
+    [message]="(aRetirer?.nom || '') + ' ne fera plus partie du comité. Son compte reste actif.'" (confirm)="retirer()" (cancel)="aRetirer = null"></app-confirm-modal>
+</app-layout>

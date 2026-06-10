@@ -1,0 +1,9 @@
+.hello { display: flex; align-items: center; gap: 18px; padding: 20px 22px; background: linear-gradient(120deg, #fff 55%, var(--brand-50)); }
+.grow { flex: 1; min-width: 0; }
+.hello h2 { font-size: 20px; }
+.ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+.lien { color: var(--text); text-decoration: none !important; }
+.lien:hover { background: var(--surface-2); }
+.n-ico { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--brand-100); color: var(--brand); flex-shrink: 0; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }

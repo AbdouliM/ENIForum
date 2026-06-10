@@ -1,0 +1,94 @@
+<app-layout title="Édition du Forum" subtitle="Chaque édition regroupe ses comités, tâches et workshops">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+
+  <div class="toolbar">
+    <span class="spacer"></span>
+    <button class="btn btn-primary" (click)="ouvrir(null)"><lucide-icon name="plus" [size]="16"></lucide-icon> Nouvelle édition</button>
+  </div>
+
+  <div class="skeleton" style="height:180px" *ngIf="loading"></div>
+
+  <ng-container *ngIf="!loading">
+    <div class="section-title">Édition en cours</div>
+    <div class="stack">
+      <div class="card edition" *ngFor="let e of actives">
+        <div class="year">{{ e.edition }}</div>
+        <div class="grow">
+          <div class="row"><h3>{{ e.nom }}</h3><app-statut-badge [statut]="e.statut"></app-statut-badge></div>
+          <p class="muted" *ngIf="e.description">{{ e.description }}</p>
+          <div class="meta">
+            <span><lucide-icon name="calendar" [size]="15"></lucide-icon> Début : {{ e.dateDebut | date:'d MMM y' }}</span>
+            <span><lucide-icon name="flag" [size]="15"></lucide-icon> Forum : {{ e.dateEvenement | date:'d MMMM y' }}</span>
+            <span><lucide-icon name="map-pin" [size]="15"></lucide-icon> {{ e.lieu }}</span>
+            <span *ngIf="jours(e) !== null && jours(e)! >= 0" class="badge badge-blue">J-{{ jours(e) }}</span>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="btn btn-success btn-sm" *ngIf="e.statut === 'PLANIFICATION'" (click)="changerStatut(e, 'EN_COURS')">
+            <lucide-icon name="rocket" [size]="15"></lucide-icon> Lancer
+          </button>
+          <button class="btn btn-secondary btn-sm" (click)="ouvrir(e)"><lucide-icon name="pencil" [size]="15"></lucide-icon> Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="aCloturer = e"><lucide-icon name="archive" [size]="15"></lucide-icon> Clôturer</button>
+        </div>
+      </div>
+      <div class="card" *ngIf="!actives.length">
+        <app-empty icon="calendar-days" title="Aucune édition en cours" text="Créez l’édition de l’année pour commencer l’organisation.">
+          <button class="btn btn-primary" (click)="ouvrir(null)"><lucide-icon name="plus" [size]="16"></lucide-icon> Créer l’édition</button>
+        </app-empty>
+      </div>
+    </div>
+
+    <ng-container *ngIf="cloturees.length">
+      <div class="section-title mt">Éditions clôturées</div>
+      <div class="card">
+        <div class="list">
+          <div class="list-item" *ngFor="let e of cloturees">
+            <span class="year sm">{{ e.edition }}</span>
+            <div class="grow"><div class="strong">{{ e.nom }}</div><div class="muted small">{{ e.dateEvenement | date:'d MMMM y' }} · {{ e.lieu }}</div></div>
+            <a class="btn btn-ghost btn-sm" routerLink="/admin/historique">Voir l’historique</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <app-modal [open]="modalOuvert" [title]="edition ? 'Modifier l’édition' : 'Nouvelle édition'" (close)="modalOuvert = false">
+    <form [formGroup]="form" id="formEd" class="form-grid" (ngSubmit)="enregistrer()">
+      <div class="field full">
+        <label for="e-nom">Nom <span class="req">*</span></label>
+        <input id="e-nom" class="input" formControlName="nom">
+      </div>
+      <div class="field">
+        <label for="e-an">Année <span class="req">*</span></label>
+        <input id="e-an" class="input" formControlName="edition" placeholder="2027" inputmode="numeric">
+        <span class="field-error" *ngIf="f['edition'].touched && f['edition'].invalid">Année sur 4 chiffres</span>
+      </div>
+      <div class="field">
+        <label for="e-lieu">Lieu <span class="req">*</span></label>
+        <input id="e-lieu" class="input" formControlName="lieu">
+      </div>
+      <div class="field">
+        <label for="e-deb">Début de l’organisation <span class="req">*</span></label>
+        <input id="e-deb" class="input" type="date" formControlName="dateDebut">
+      </div>
+      <div class="field">
+        <label for="e-ev">Date du Forum <span class="req">*</span></label>
+        <input id="e-ev" class="input" type="date" formControlName="dateEvenement">
+        <span class="field-error" *ngIf="form.errors?.['dates']">Doit être après le début de l’organisation</span>
+      </div>
+      <div class="field full">
+        <label for="e-desc">Description</label>
+        <textarea id="e-desc" class="textarea" rows="3" formControlName="description" placeholder="Thématiques, objectifs…"></textarea>
+      </div>
+      <div class="alert alert-error full" *ngIf="erreurForm"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreurForm }}</div>
+    </form>
+    <div modal-footer>
+      <button class="btn btn-secondary" (click)="modalOuvert = false">Annuler</button>
+      <button class="btn btn-primary" type="submit" form="formEd" [disabled]="enregistrement">Enregistrer</button>
+    </div>
+  </app-modal>
+
+  <app-confirm-modal [open]="!!aCloturer" title="Clôturer cette édition ?" icon="archive" [danger]="true" confirmLabel="Clôturer"
+    message="L’édition passera en lecture seule : plus aucune tâche, aucun comité ni workshop ne pourra être modifié."
+    (confirm)="cloturer()" (cancel)="aCloturer = null"></app-confirm-modal>
+</app-layout>

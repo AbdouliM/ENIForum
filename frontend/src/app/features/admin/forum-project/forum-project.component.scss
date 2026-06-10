@@ -1,0 +1,9 @@
+.edition { display: flex; gap: 18px; align-items: flex-start; padding: 20px; flex-wrap: wrap; }
+.grow { flex: 1; min-width: 240px; }
+.edition h3 { font-size: 17px; }
+.edition p { margin-top: 4px; font-size: 13px; }
+.year { width: 64px; height: 64px; border-radius: 16px; background: var(--gradient); color: #fff; font-weight: 800; font-size: 17px; display: grid; place-items: center; flex-shrink: 0; }
+.year.sm { width: 46px; height: 46px; font-size: 13px; border-radius: 12px; background: #E9EEF4; color: var(--text-2); }
+.meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; color: var(--text-2); font-size: 13px; font-weight: 600; align-items: center; }
+.meta span { display: inline-flex; align-items: center; gap: 6px; }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; }

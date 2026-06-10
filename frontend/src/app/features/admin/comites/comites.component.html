@@ -1,0 +1,85 @@
+<app-layout title="Comités" subtitle="Organisation des équipes de l’édition">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+
+  <div class="toolbar">
+    <span class="muted">{{ comites.length }} comité(s)</span>
+    <span class="spacer"></span>
+    <button class="btn btn-primary" (click)="ouvrir(null)"><lucide-icon name="plus" [size]="16"></lucide-icon> Nouveau comité</button>
+  </div>
+
+  <div class="grid grid-3" *ngIf="loading"><div class="skeleton" style="height:210px" *ngFor="let i of [1,2,3]"></div></div>
+
+  <div class="grid grid-3" *ngIf="!loading">
+    <div class="card comite" *ngFor="let c of comites">
+      <div class="top">
+        <span class="ico"><lucide-icon [name]="icone(c.nom)" [size]="20"></lucide-icon></span>
+        <div class="grow">
+          <h3>{{ c.nom }}</h3>
+          <span class="muted small">{{ c.forumProject?.nom || 'Sans édition' }}</span>
+        </div>
+        <button class="icon-btn" title="Modifier" (click)="ouvrir(c)"><lucide-icon name="pencil" [size]="16"></lucide-icon></button>
+        <button class="icon-btn danger" title="Supprimer" (click)="aSupprimer = c"><lucide-icon name="trash-2" [size]="16"></lucide-icon></button>
+      </div>
+      <p class="desc">{{ c.description }}</p>
+      <div class="chef">
+        <ng-container *ngIf="c.chef; else sansChef">
+          <span class="avatar sm">{{ initiales(c.chef.nom) }}</span>
+          <span class="truncate"><b>{{ c.chef.nom }}</b><br><span class="muted small">Chef de comité</span></span>
+        </ng-container>
+        <ng-template #sansChef><span class="badge badge-amber"><lucide-icon name="triangle-alert" [size]="13"></lucide-icon> Sans chef</span></ng-template>
+      </div>
+      <div class="stats">
+        <span><lucide-icon name="users" [size]="15"></lucide-icon> {{ c.membres?.length || 0 }} membre(s)</span>
+        <span><lucide-icon name="list-todo" [size]="15"></lucide-icon> {{ taches(c) }} tâche(s)</span>
+      </div>
+      <div class="row">
+        <div class="progress grow-bar"><div [style.width.%]="pourcent(c)" [ngClass]="pourcent(c) >= 70 ? 'high' : pourcent(c) >= 40 ? 'mid' : 'low'"></div></div>
+        <span class="strong small">{{ pourcent(c) }} %</span>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="!loading && !comites.length">
+    <app-empty icon="layers" title="Aucun comité" text="Créez les comités de l’édition (Sponsoring, Design, Logistique…).">
+      <button class="btn btn-primary" (click)="ouvrir(null)"><lucide-icon name="plus" [size]="16"></lucide-icon> Créer un comité</button>
+    </app-empty>
+  </div>
+
+  <app-modal [open]="modalOuvert" [title]="edition ? 'Modifier le comité' : 'Nouveau comité'" (close)="modalOuvert = false">
+    <form [formGroup]="form" id="formComite" class="form-grid" (ngSubmit)="enregistrer()">
+      <div class="field full">
+        <label for="c-nom">Nom <span class="req">*</span></label>
+        <input id="c-nom" class="input" formControlName="nom" placeholder="Ex. : Design">
+        <span class="field-error" *ngIf="f['nom'].touched && f['nom'].invalid">Nom requis</span>
+      </div>
+      <div class="field full">
+        <label for="c-desc">Mission <span class="req">*</span></label>
+        <textarea id="c-desc" class="textarea" rows="3" formControlName="description"></textarea>
+        <span class="field-error" *ngIf="f['description'].touched && f['description'].invalid">Décrivez la mission du comité</span>
+      </div>
+      <div class="field">
+        <label for="c-ed">Édition <span class="req">*</span></label>
+        <select id="c-ed" class="select" formControlName="forumProjectId">
+          <option [ngValue]="null" disabled>Choisir…</option>
+          <option *ngFor="let e of editions" [ngValue]="e.id">{{ e.nom }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="c-chef">Chef de comité</label>
+        <select id="c-chef" class="select" formControlName="chefId">
+          <option [ngValue]="null">Aucun pour l’instant</option>
+          <option *ngFor="let u of chefsDisponibles" [ngValue]="u.id">{{ u.nom }}</option>
+        </select>
+        <span class="hint">Seuls les comptes « Chef de comité » libres sont proposés.</span>
+      </div>
+      <div class="alert alert-error full" *ngIf="erreurForm"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreurForm }}</div>
+    </form>
+    <div modal-footer>
+      <button class="btn btn-secondary" (click)="modalOuvert = false">Annuler</button>
+      <button class="btn btn-primary" type="submit" form="formComite" [disabled]="enregistrement">Enregistrer</button>
+    </div>
+  </app-modal>
+
+  <app-confirm-modal [open]="!!aSupprimer" title="Supprimer ce comité ?" icon="trash-2" [danger]="true" confirmLabel="Supprimer"
+    [message]="'Le comité ' + (aSupprimer?.nom || '') + ' sera supprimé. Impossible s’il contient encore des tâches ou des workshops.'"
+    (confirm)="supprimer()" (cancel)="aSupprimer = null"></app-confirm-modal>
+</app-layout>

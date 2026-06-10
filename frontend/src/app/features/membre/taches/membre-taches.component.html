@@ -1,0 +1,47 @@
+<app-layout title="Mes tâches" subtitle="Faites avancer vos tâches et tenez votre équipe informée">
+  <div class="alert alert-error" *ngIf="erreur"><lucide-icon name="circle-alert" [size]="18"></lucide-icon>{{ erreur }}</div>
+  <div class="board" *ngIf="loading"><div class="skeleton" style="height:260px" *ngFor="let i of [1,2,3]"></div></div>
+
+  <div class="card" *ngIf="!loading && !erreur && !taches.length">
+    <app-empty icon="list-todo" title="Aucune tâche pour le moment" text="Votre chef de comité vous en assignera bientôt. Vous recevrez une notification."></app-empty>
+  </div>
+
+  <div class="board" *ngIf="!loading && taches.length">
+    <section class="col" *ngFor="let c of colonnes">
+      <div class="col-head">
+        <lucide-icon [name]="c.icone" [size]="16"></lucide-icon>
+        <span>{{ c.titre }}</span>
+        <span class="count">{{ de(c).length }}</span>
+      </div>
+      <div class="cards">
+        <article class="card tache" *ngFor="let t of de(c)" [class.retard]="t.statut === 'EN_RETARD'" [class.done]="t.statut === 'TERMINEE'">
+          <div class="row top">
+            <span class="badge badge-amber" *ngIf="t.priorite === 'URGENTE'"><lucide-icon name="flag" [size]="12"></lucide-icon> Urgente</span>
+            <span class="badge badge-red" *ngIf="t.statut === 'EN_RETARD'">En retard</span>
+            <span class="spacer"></span>
+            <span class="muted small">{{ t.comiteNom }}</span>
+          </div>
+          <h3>{{ t.titre }}</h3>
+          <p class="muted small" *ngIf="t.description">{{ t.description }}</p>
+          <div class="row due">
+            <lucide-icon name="calendar" [size]="14"></lucide-icon>
+            <span>{{ t.dateFin | date:'d MMM y' }}</span>
+            <span class="small strong" [ngClass]="echeance(t).classe">{{ echeance(t).texte }}</span>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-sm" (click)="commentaires = t"><lucide-icon name="message-square" [size]="15"></lucide-icon> Commentaires</button>
+            <span class="spacer"></span>
+            <button class="btn btn-primary btn-sm" *ngIf="t.statut === 'A_FAIRE'" (click)="changer(t, 'EN_COURS')" [disabled]="enCours === t.id">Démarrer</button>
+            <button class="btn btn-success btn-sm" *ngIf="t.statut === 'EN_COURS' || t.statut === 'EN_RETARD'" (click)="changer(t, 'TERMINEE')" [disabled]="enCours === t.id">
+              <lucide-icon name="check" [size]="15"></lucide-icon> Terminer
+            </button>
+            <button class="btn btn-secondary btn-sm" *ngIf="t.statut === 'TERMINEE'" (click)="changer(t, 'EN_COURS')" [disabled]="enCours === t.id">Rouvrir</button>
+          </div>
+        </article>
+        <div class="vide" *ngIf="!de(c).length">Aucune tâche</div>
+      </div>
+    </section>
+  </div>
+
+  <app-commentaires [tacheId]="commentaires?.id ?? null" [titre]="commentaires?.titre ?? ''" (close)="commentaires = null"></app-commentaires>
+</app-layout>
