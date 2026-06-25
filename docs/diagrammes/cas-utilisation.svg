@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="790" viewBox="0 0 1000 790" font-family="Arial">
+<rect width="1000" height="790" fill="#fff"/>
+<rect x="250" y="40" width="500" height="720" fill="none" stroke="#333" stroke-width="1.5"/>
+<text x="500" y="62" text-anchor="middle" font-size="15" font-weight="bold">EniForum</text>
+<line x1="110" y1="130" x2="350" y2="90" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="130" x2="350" y2="145" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="130" x2="350" y2="200" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="290" x2="350" y2="200" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="290" x2="350" y2="255" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="460" x2="350" y2="310" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="460" x2="350" y2="365" stroke="#555" stroke-width="1.2"/>
+<line x1="110" y1="680" x2="350" y2="695" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="360" x2="650" y2="310" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="360" x2="650" y2="420" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="360" x2="650" y2="475" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="360" x2="650" y2="530" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="360" x2="650" y2="640" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="610" x2="650" y2="585" stroke="#555" stroke-width="1.2"/>
+<line x1="890" y1="610" x2="650" y2="640" stroke="#555" stroke-width="1.2"/>
+<ellipse cx="500" cy="90" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="95" text-anchor="middle" font-size="13">Gérer les utilisateurs</text>
+<ellipse cx="500" cy="145" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="150" text-anchor="middle" font-size="13">Gérer les éditions et les comités</text>
+<ellipse cx="500" cy="200" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="205" text-anchor="middle" font-size="13">Consulter les statistiques</text>
+<ellipse cx="500" cy="255" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="260" text-anchor="middle" font-size="13">Décider des candidatures</text>
+<ellipse cx="500" cy="310" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="315" text-anchor="middle" font-size="13">Créer et assigner des tâches</text>
+<ellipse cx="500" cy="365" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="370" text-anchor="middle" font-size="13">Suivre l'avancement</text>
+<ellipse cx="500" cy="420" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="425" text-anchor="middle" font-size="13">Proposer un workshop</text>
+<ellipse cx="500" cy="475" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="480" text-anchor="middle" font-size="13">Valider un workshop</text>
+<ellipse cx="500" cy="530" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="535" text-anchor="middle" font-size="13">Traiter les demandes d'adhésion</text>
+<ellipse cx="500" cy="585" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="590" text-anchor="middle" font-size="13">Mettre à jour ses tâches</text>
+<ellipse cx="500" cy="640" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="645" text-anchor="middle" font-size="13">Consulter ses notifications</text>
+<ellipse cx="500" cy="695" rx="150" ry="22" fill="#F5F7FA" stroke="#333" stroke-width="1.3"/><text x="500" y="700" text-anchor="middle" font-size="13">Déposer une candidature</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="90" cy="110" r="10"/><line x1="90" y1="120" x2="90" y2="145"/>
+<line x1="75" y1="130" x2="105" y2="130"/><line x1="90" y1="145" x2="78" y2="165"/><line x1="90" y1="145" x2="102" y2="165"/></g>
+<text x="90" y="185" text-anchor="middle" font-size="14">Administrateur</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="90" cy="270" r="10"/><line x1="90" y1="280" x2="90" y2="305"/>
+<line x1="75" y1="290" x2="105" y2="290"/><line x1="90" y1="305" x2="78" y2="325"/><line x1="90" y1="305" x2="102" y2="325"/></g>
+<text x="90" y="345" text-anchor="middle" font-size="14">Comité de pilotage</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="90" cy="440" r="10"/><line x1="90" y1="450" x2="90" y2="475"/>
+<line x1="75" y1="460" x2="105" y2="460"/><line x1="90" y1="475" x2="78" y2="495"/><line x1="90" y1="475" x2="102" y2="495"/></g>
+<text x="90" y="515" text-anchor="middle" font-size="14">Coordinatrice</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="90" cy="660" r="10"/><line x1="90" y1="670" x2="90" y2="695"/>
+<line x1="75" y1="680" x2="105" y2="680"/><line x1="90" y1="695" x2="78" y2="715"/><line x1="90" y1="695" x2="102" y2="715"/></g>
+<text x="90" y="735" text-anchor="middle" font-size="14">Candidat</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="910" cy="340" r="10"/><line x1="910" y1="350" x2="910" y2="375"/>
+<line x1="895" y1="360" x2="925" y2="360"/><line x1="910" y1="375" x2="898" y2="395"/><line x1="910" y1="375" x2="922" y2="395"/></g>
+<text x="910" y="415" text-anchor="middle" font-size="14">Chef de comité</text>
+<g stroke="#333" stroke-width="2" fill="none">
+<circle cx="910" cy="590" r="10"/><line x1="910" y1="600" x2="910" y2="625"/>
+<line x1="895" y1="610" x2="925" y2="610"/><line x1="910" y1="625" x2="898" y2="645"/><line x1="910" y1="625" x2="922" y2="645"/></g>
+<text x="910" y="665" text-anchor="middle" font-size="14">Membre</text>
+</svg>
